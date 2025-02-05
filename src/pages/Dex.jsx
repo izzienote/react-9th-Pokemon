@@ -2,14 +2,12 @@ import React from "react";
 import Dashboard from "../components/Dashboard";
 import PokemonList from "../components/PokemonList";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 const Stdashboard = styled.div`
   text-align: center;
 `;
 const Dex = () => {
   const [myPokemon, setMyPokemon] = useState([]);
-  const location = useLocation();
 
   return (
     <div>

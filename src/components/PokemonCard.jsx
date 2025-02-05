@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const StCardContainer = styled.div`
@@ -6,6 +7,10 @@ const StCardContainer = styled.div`
   border: 1px solid lightgray;
   background-color: white;
   border-radius: 10px;
+
+  &:hover {
+    scale: 1.03;
+  }
 `;
 
 const StButton = styled.button`
@@ -23,46 +28,39 @@ const StButton = styled.button`
   }
 `;
 
-const StContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  grid-gap: 1rem;
-`;
-
 const PokemonCard = (props) => {
-  const { MOCK_DATA, myPokemon, setMyPokemon } = props;
+  const { card, addPokemon, text, removePokemon } = props;
 
-  // console.log(MOCK_DATA);
+  //useNavigate 선언
+  const navigate = useNavigate();
 
-  const addPokemon = (id) => {
-    if (myPokemon.length >= 6) {
-      alert("포켓몬은 6마리까지만 추가할 수 있습니다!");
-      return;
-    }
-
-    if (myPokemon.some((pokemon) => pokemon.id === id)) {
-      alert("이미 추가된 포켓몬입니다!");
-      return;
-    }
-    const addedPokemon = MOCK_DATA.filter((data) => data.id === id);
-    setMyPokemon((prev) => [...prev, ...addedPokemon]);
+  // 카드 클릭 시, navigate로 경로 설정하기
+  const handleCardDetail = (id) => {
+    navigate(`/dex/detail?id=${id}`);
   };
 
-  // console.log(myPokemon);
-
   return (
-    <StContainer>
-      {MOCK_DATA.map((data) => (
-        <StCardContainer key={data.id}>
-          <div>
-            <img src={data.img_url} />
-          </div>
-          <div>{data.korean_name}</div>
-          <div>No. {data.id}</div>
-          <StButton onClick={() => addPokemon(data.id)}>추가</StButton>
-        </StCardContainer>
-      ))}
-    </StContainer>
+    <div onClick={() => handleCardDetail(card.id)}>
+      <StCardContainer key={card.id}>
+        <div>
+          <img src={card.img_url} />
+        </div>
+        <div>{card.korean_name}</div>
+        <div>No. {card.id}</div>
+        {text === "추가" ? (
+          <StButton
+            onClick={(e) => {
+              e.stopPropagation();
+              return addPokemon(card.id);
+            }}
+          >
+            {text}
+          </StButton>
+        ) : (
+          <StButton onClick={() => removePokemon(card.id)}>{text}</StButton>
+        )}
+      </StCardContainer>
+    </div>
   );
 };
 
