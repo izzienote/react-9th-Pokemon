@@ -1,10 +1,16 @@
 import React from "react";
 import Router from "./shared/Router";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
+
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+`;
 
 const App = () => {
   return (
     <>
+      <GlobalStyle />
       <Router />
     </>
   );

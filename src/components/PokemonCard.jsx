@@ -57,7 +57,14 @@ const PokemonCard = (props) => {
             {text}
           </StButton>
         ) : (
-          <StButton onClick={() => removePokemon(card.id)}>{text}</StButton>
+          <StButton
+            onClick={(e) => {
+              e.stopPropagation();
+              return removePokemon(card.id);
+            }}
+          >
+            {text}
+          </StButton>
         )}
       </StCardContainer>
     </div>

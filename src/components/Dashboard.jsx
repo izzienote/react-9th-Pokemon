@@ -3,7 +3,20 @@ import styled from "styled-components";
 import PokemonCard from "./PokemonCard";
 
 const StDashBoardBackgrounColor = styled.div`
-  height: 300px;
+  background-image: url("https://c0.klipartz.com/pngpicture/1012/665/gratis-png-cielo-azul-nube-fondo-azul-s.png");
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 50px;
+`;
+
+const StImgBox = styled.div`
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-top: 30px;
+  margin-bottom: 30px;
 `;
 
 const StBox = styled.div`
@@ -50,7 +63,12 @@ const Dashboard = (props) => {
 
   return (
     <StDashBoardBackgrounColor>
-      <h2>나만의 포켓몬 6마리 지정</h2>
+      <StImgBox>
+        <img
+          src="https://www.freeiconspng.com/uploads/pokemon-png-14.png"
+          height={200}
+        />
+      </StImgBox>
 
       <div>
         <StBox>
