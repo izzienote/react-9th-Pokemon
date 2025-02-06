@@ -14,14 +14,6 @@ const StContainer = styled.div`
 const PokemonList = (props) => {
   const { myPokemon, setMyPokemon } = props;
 
-  // //useNavigate 선언
-  // const navigate = useNavigate();
-
-  // // 카드 클릭 시, navigate로 경로 설정하기
-  // const handleCardDetail = (id) => {
-  //   navigate(`/dex/detail?id=${id}`);
-  // };
-
   const addPokemon = (id) => {
     if (myPokemon.length >= 6) {
       alert("포켓몬은 6마리까지만 추가할 수 있습니다!");
