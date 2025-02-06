@@ -1,7 +1,7 @@
 import React from "react";
 import MOCK_DATA from "../components/MOCK_DATA";
 import styled from "styled-components";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const StBox = styled.div`
   display: flex;
@@ -9,6 +9,12 @@ const StBox = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+  font-weight: 600;
+`;
+
+const StH2 = styled.h2`
+  font-size: 1.5rem;
+  margin-bottom: 40px;
 `;
 
 const StButton = styled.button`
@@ -18,6 +24,7 @@ const StButton = styled.button`
   border-radius: 5px;
   width: 100px;
   height: 30px;
+  margin-top: 50px;
 
   &:hover {
     scale: 1.05;
@@ -37,16 +44,20 @@ const PokemonDetail = () => {
     (pokemon) => pokemon.id === Number(pokemonId)
   );
 
-  console.log(seletedPokemonInfo);
+  // console.log(seletedPokemonInfo);
 
   return (
     <StBox>
       <div key={seletedPokemonInfo.id}>
         <div>
+          <img src="" />
+        </div>
+        <div>
           <img src={seletedPokemonInfo.img_url} height={200} />
         </div>
-        <h2>{seletedPokemonInfo.korean_name}</h2>
+        <StH2>{seletedPokemonInfo.korean_name}</StH2>
         <p>타입 : {seletedPokemonInfo.types.join(", ")}</p>
+        <br />
         <p>{seletedPokemonInfo.description}</p>
         <StButton onClick={() => navigate(-1)}>뒤로 가기</StButton>
       </div>
