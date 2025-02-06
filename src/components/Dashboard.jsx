@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import PokemonCard from "./PokemonCard";
+import { PokemonContext } from "../contexts/PokemonContext";
+import { useContext } from "react";
 
 const StDashBoardBackgrounColor = styled.div`
   background-image: url("https://c0.klipartz.com/pngpicture/1012/665/gratis-png-cielo-azul-nube-fondo-azul-s.png");
@@ -44,22 +46,14 @@ const StMyPokemonBox = styled.div`
   background-color: #ebebeb;
 `;
 
-const Dashboard = (props) => {
-  const { myPokemon, setMyPokemon } = props;
-  let emptyArr = Array(6).fill();
-  // console.log(myPokemon[0]);
+const Dashboard = () => {
+  const { myPokemon, removePokemon } = useContext(PokemonContext);
 
-  //맵으로 emptyArr에 myPokemon의 i에 해당하는 인덱스로 넣어주고, i가 없으면 0으로 대체(undefined 안나오게 하려고 이렇게 처리함)
+  let emptyArr = Array(6).fill();
+
   let newArr = emptyArr.map((e, i) => {
-    // console.log(e);
     return myPokemon[i] || 0;
   });
-  // console.log(newArr);
-
-  const removePokemon = (id) => {
-    const removePokemon = myPokemon.filter((card) => card.id !== id);
-    setMyPokemon(removePokemon);
-  };
 
   return (
     <StDashBoardBackgrounColor>

@@ -1,21 +1,20 @@
 import React from "react";
 import Dashboard from "../components/Dashboard";
 import PokemonList from "../components/PokemonList";
-import { useState } from "react";
 import styled from "styled-components";
+import { PokemonProvider } from "../contexts/PokemonContext";
+
 const Stdashboard = styled.div`
   text-align: center;
 `;
 const Dex = () => {
-  const [myPokemon, setMyPokemon] = useState([]);
-
   return (
-    <div>
+    <PokemonProvider>
       <Stdashboard>
-        <Dashboard myPokemon={myPokemon} setMyPokemon={setMyPokemon} />
+        <Dashboard />
       </Stdashboard>
-      <PokemonList myPokemon={myPokemon} setMyPokemon={setMyPokemon} />
-    </div>
+      <PokemonList />
+    </PokemonProvider>
   );
 };
 

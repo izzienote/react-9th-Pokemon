@@ -10,8 +10,7 @@ const StBox = styled.div`
   align-items: center;
   text-align: center;
   font-weight: 600;
-  /* background-color: ${(props) => props.backgroundColor}; */
-  background: ${(props) => props.backgroundColor};
+  background: ${(props) => props.$backgroundColor};
 `;
 
 const StH2 = styled.h2`
@@ -59,30 +58,24 @@ const PokemonDetail = () => {
     switch (true) {
       case getcolor.some((e) => e === "물"):
         return "#a9d8ff;";
-        break;
       case getcolor.some((e) => e === "불꽃"):
         return "#f5a68c;";
-        break;
       case getcolor.some((e) => e === "전기"):
         return "#F5F58C;";
-        break;
       case getcolor.some((e) => e === "독"):
         return "#b68cf5;";
-        break;
       case getcolor.some((e) => e === "노말"):
         return "#ffffff;";
-        break;
       case getcolor.some((e) => e === "풀"):
         return "#8cf5bd;";
-        break;
       default:
-        break;
+        return "white";
     }
     return getcolor;
   };
 
   return (
-    <StBox backgroundColor={getBackgroundColor}>
+    <StBox $backgroundColor={getBackgroundColor}>
       <div key={seletedPokemonInfo.id}>
         <div>
           <img src="" />
