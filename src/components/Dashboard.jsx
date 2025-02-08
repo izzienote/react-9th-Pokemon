@@ -3,6 +3,7 @@ import styled from "styled-components";
 import PokemonCard from "./PokemonCard";
 import { PokemonContext } from "../contexts/PokemonContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const StDashBoardBackgrounColor = styled.div`
   background-image: url("https://c0.klipartz.com/pngpicture/1012/665/gratis-png-cielo-azul-nube-fondo-azul-s.png");
@@ -48,6 +49,7 @@ const StMyPokemonBox = styled.div`
 
 const Dashboard = () => {
   const { myPokemon, removePokemon } = useContext(PokemonContext);
+  const navigate = useNavigate();
 
   let emptyArr = Array(6).fill();
 
@@ -57,7 +59,7 @@ const Dashboard = () => {
 
   return (
     <StDashBoardBackgrounColor>
-      <StImgBox>
+      <StImgBox onClick={() => navigate(`/`)}>
         <img
           src="https://www.freeiconspng.com/uploads/pokemon-png-14.png"
           height={200}

@@ -1,6 +1,7 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { PokemonContext } from "../contexts/PokemonContext";
 
 const StCardContainer = styled.div`
   text-align: center;
@@ -14,7 +15,7 @@ const StCardContainer = styled.div`
 `;
 
 const StButton = styled.button`
-  background-color: red;
+  background-color: ${(props) => props.$btnColor};
   color: white;
   border: none;
   border-radius: 5px;
@@ -24,12 +25,12 @@ const StButton = styled.button`
   margin-top: 15px;
 
   &:hover {
-    background-color: darkred;
+    background-color: ${(props) => props.$hoverColor};
   }
 `;
 
-const PokemonCard = (props) => {
-  const { card, addPokemon, text, removePokemon } = props;
+const PokemonCard = ({ card, text }) => {
+  const { addPokemon, removePokemon } = useContext(PokemonContext);
 
   //useNavigate 선언
   const navigate = useNavigate();
@@ -40,34 +41,41 @@ const PokemonCard = (props) => {
   };
 
   return (
-    <div onClick={() => handleCardDetail(card.id)}>
-      <StCardContainer key={card.id}>
-        <div>
-          <img src={card.img_url} />
-        </div>
-        <div>{card.korean_name}</div>
-        <div>No. {card.id}</div>
-        {text === "추가" ? (
-          <StButton
-            onClick={(e) => {
-              e.stopPropagation();
-              return addPokemon(card.id);
-            }}
-          >
-            {text}
-          </StButton>
-        ) : (
-          <StButton
-            onClick={(e) => {
-              e.stopPropagation();
-              return removePokemon(card.id);
-            }}
-          >
-            {text}
-          </StButton>
-        )}
-      </StCardContainer>
-    </div>
+    // <Link
+    //   style={{ textDecoration: "none", color: "black" }}
+    //   to={`/dex/detail?id=${card.id}`}
+    // >
+    <StCardContainer onClick={() => handleCardDetail(card.id)}>
+      <div>
+        <img src={card.img_url} />
+      </div>
+      <div>{card.korean_name}</div>
+      <div>No. {card.id}</div>
+      {text === "추가" ? (
+        <StButton
+          $btnColor="#6d996f"
+          $hoverColor="darkgreen"
+          onClick={(e) => {
+            e.stopPropagation();
+            return addPokemon(card.id);
+          }}
+        >
+          {text}
+        </StButton>
+      ) : (
+        <StButton
+          $btnColor="red"
+          $hoverColor="darkred"
+          onClick={(e) => {
+            e.stopPropagation();
+            return removePokemon(card.id);
+          }}
+        >
+          {text}
+        </StButton>
+      )}
+    </StCardContainer>
+    // </Link>
   );
 };
 

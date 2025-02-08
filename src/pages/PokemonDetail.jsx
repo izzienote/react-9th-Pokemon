@@ -1,7 +1,18 @@
-import React from "react";
-import MOCK_DATA from "../components/MOCK_DATA";
+import React, { useContext } from "react";
+import MOCK_DATA from "../data/MOCK_DATA";
 import styled from "styled-components";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import POKENMON_COLOR from "../data/POKEMON_COLOR";
+import { PokemonContext } from "../contexts/PokemonContext";
+
+const StContainer = styled.div`
+  width: 500px;
+  height: 500px;
+  background-color: rgb(255, 255, 255, 0.3);
+  border: none;
+  border-radius: 250px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+`;
 
 const StBox = styled.div`
   display: flex;
@@ -10,7 +21,12 @@ const StBox = styled.div`
   align-items: center;
   text-align: center;
   font-weight: 600;
-  background: ${(props) => props.$backgroundColor};
+  background: ${({ $types }) =>
+    $types.length > 1
+      ? `linear-gradient(${POKENMON_COLOR[$types[0]] || "#ffffff"}, ${
+          POKENMON_COLOR[$types[1]] || "#ffffff"
+        })`
+      : POKENMON_COLOR[$types[0]] || "#ffffff"};
 `;
 
 const StH2 = styled.h2`
@@ -19,11 +35,11 @@ const StH2 = styled.h2`
 `;
 
 const StButton = styled.button`
-  color: white;
-  background-color: black;
-  border: nonne;
+  color: #ffffff;
+  background-color: #3f3f3f;
+  border: none;
   border-radius: 5px;
-  width: 100px;
+  width: 180px;
   height: 30px;
   margin-top: 50px;
 
@@ -32,63 +48,124 @@ const StButton = styled.button`
   }
 `;
 
-const PokemonDetail = () => {
-  const [params] = useSearchParams();
-  // console.log(params);
-  const pokemonId = params.get("id");
-  // console.log(pokemonId);
+const StPageMoveBtn = styled.button`
+  border: none;
+  font-size: 1.5rem;
+  background-color: transparent;
+  margin-left: 20px;
+  margin-right: 20px;
+  color: grey;
 
-  //뒤로가기 -1을 해주기 위해 useNavigate 사용
+  &:hover {
+    color: black;
+  }
+`;
+
+const StAddRemoveButton = styled.button`
+  border: 5px solid ${(props) => props.$btnColor};
+  border-radius: 20px;
+  color: black;
+  width: 200px;
+  height: 40px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  background-color: transparent;
+  font-weight: 800;
+
+  &:hover {
+    scale: 1.03;
+  }
+`;
+
+const PokemonDetail = () => {
+  // [*] 추가/삭제 버튼 추가
+  const { myPokemon, addPokemon, removePokemon } = useContext(PokemonContext);
+
+  const [params] = useSearchParams();
+  const pokemonId = params.get("id");
+
+  // [뒤로가기, 이전 및 다음 몬스터 이동] useNavigate 사용
   const navigate = useNavigate();
 
   const seletedPokemonInfo = MOCK_DATA.find(
     (pokemon) => pokemon.id === Number(pokemonId)
   );
-
-  // 포켓몬 디테일 페이지 배경색 설정
-  // 문제1. 타입이 2가지일 경우, 색상을 반반 표현하고 싶음(그라데이션으로)
-
-  const getBackgroundColor = () => {
-    const getcolor = seletedPokemonInfo.types;
-
-    if (getcolor.length > 1) {
-      return "linear-gradient(#a9d8ff, #F5F58C)";
+  // [*] myPokemon에 선택된 포켓몬이 있는지 true/ false로 반환하는 변수 선언
+  const isPokemonInclude = myPokemon.some(
+    (pokemon) => pokemon.id === seletedPokemonInfo.id
+  );
+  // [이전포켓몬 이동]
+  const goToNext = (id) => {
+    if (id === MOCK_DATA.length) {
+      alert("마지막 포켓몬입니다");
+      return;
+    }
+    navigate(`/dex/detail?id=${id + 1}`);
+  };
+  // [다음포켓몬 이동]
+  const goToPrev = (id) => {
+    if (id === 1) {
+      alert("첫번째 포켓몬입니다");
+      return;
     }
 
-    switch (true) {
-      case getcolor.some((e) => e === "물"):
-        return "#a9d8ff;";
-      case getcolor.some((e) => e === "불꽃"):
-        return "#f5a68c;";
-      case getcolor.some((e) => e === "전기"):
-        return "#F5F58C;";
-      case getcolor.some((e) => e === "독"):
-        return "#b68cf5;";
-      case getcolor.some((e) => e === "노말"):
-        return "#ffffff;";
-      case getcolor.some((e) => e === "풀"):
-        return "#8cf5bd;";
-      default:
-        return "white";
-    }
-    return getcolor;
+    navigate(`/dex/detail?id=${id - 1}`);
   };
 
   return (
-    <StBox $backgroundColor={getBackgroundColor}>
-      <div key={seletedPokemonInfo.id}>
-        <div>
-          <img src="" />
+    <StBox $types={seletedPokemonInfo.types}>
+      <StContainer>
+        <div key={seletedPokemonInfo.id}>
+          <div>
+            <img src={seletedPokemonInfo.img_url} height={200} />
+          </div>
+          <StH2>{seletedPokemonInfo.korean_name}</StH2>
+          <p>타입 : {seletedPokemonInfo.types.join(", ")}</p>
+          <br />
+          <p>{seletedPokemonInfo.description}</p>
+          <div>
+            {isPokemonInclude ? (
+              <StAddRemoveButton
+                $btnColor="red"
+                $hoverColor="darkred"
+                onClick={() => removePokemon(seletedPokemonInfo.id)}
+              >
+                포켓몬 도감에서 삭제하기
+              </StAddRemoveButton>
+            ) : (
+              <StAddRemoveButton
+                $btnColor="#6d996f"
+                $hoverColor="darkgreen"
+                onClick={() => addPokemon(seletedPokemonInfo.id)}
+              >
+                포켓몬 도감에 추가하기
+              </StAddRemoveButton>
+            )}
+          </div>
+          <StPageMoveBtn
+            style={{
+              visibility: seletedPokemonInfo.id <= 1 ? "hidden" : "visible",
+            }}
+            onClick={() => goToPrev(seletedPokemonInfo.id)}
+          >
+            ˂
+          </StPageMoveBtn>
+          <StButton onClick={() => navigate(`/dex`)}>
+            포켓몬 도감으로 돌아가기
+          </StButton>
+          <StPageMoveBtn
+            style={{
+              visibility:
+                seletedPokemonInfo.id >= MOCK_DATA.length
+                  ? "hidden"
+                  : "visible",
+            }}
+            onClick={() => goToNext(seletedPokemonInfo.id)}
+          >
+            ˃
+          </StPageMoveBtn>
         </div>
-        <div>
-          <img src={seletedPokemonInfo.img_url} height={200} />
-        </div>
-        <StH2>{seletedPokemonInfo.korean_name}</StH2>
-        <p>타입 : {seletedPokemonInfo.types.join(", ")}</p>
-        <br />
-        <p>{seletedPokemonInfo.description}</p>
-        <StButton onClick={() => navigate(-1)}>뒤로 가기</StButton>
-      </div>
+      </StContainer>
     </StBox>
   );
 };

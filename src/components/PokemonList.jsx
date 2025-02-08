@@ -1,8 +1,6 @@
-import React, { useContext } from "react";
-import MOCK_DATA from "./MOCK_DATA";
+import MOCK_DATA from "../data/MOCK_DATA";
 import PokemonCard from "./PokemonCard";
 import styled from "styled-components";
-import { PokemonContext } from "../contexts/PokemonContext";
 
 const StContainer = styled.div`
   display: grid;
@@ -12,19 +10,10 @@ const StContainer = styled.div`
 `;
 
 const PokemonList = () => {
-  const { addPokemon } = useContext(PokemonContext);
-
   return (
     <StContainer>
       {MOCK_DATA.map((card) => {
-        return (
-          <PokemonCard
-            key={card.id}
-            card={card}
-            addPokemon={addPokemon}
-            text="추가"
-          />
-        );
+        return <PokemonCard key={card.id} card={card} text="추가" />;
       })}
     </StContainer>
   );

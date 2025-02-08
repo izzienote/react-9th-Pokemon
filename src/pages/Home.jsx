@@ -8,7 +8,6 @@ const StBody = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  /* background-color: #c6ec6d; */
   background-image: url("https://c0.klipartz.com/pngpicture/1012/665/gratis-png-cielo-azul-nube-fondo-azul-s.png");
   background-size: cover;
 `;
@@ -21,7 +20,6 @@ const StButton = styled.button`
   border: 2px solid white;
   border-radius: 7px;
   font-size: 1rem;
-  margin-top: 50px;
 
   &:hover {
     background-color: #090a23;
@@ -32,16 +30,16 @@ const Home = () => {
   const navigate = useNavigate();
   return (
     <StBody>
-      <div>
+      {/* <div>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1024px-International_Pok%C3%A9mon_logo.svg.png"
           width={200}
         />
-      </div>
+      </div> */}
       <div>
         <img
-          src="https://www.pngkey.com/png/full/985-9854191_pokemon-cartoon.png"
-          width={300}
+          src="https://cdnx.jumpseller.com/yetiplantillas/image/37068472/resize/540/540?1688140994"
+          width={600}
         />
       </div>
       <StButton
