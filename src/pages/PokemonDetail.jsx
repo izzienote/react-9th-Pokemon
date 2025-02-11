@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
 import MOCK_DATA from "../data/MOCK_DATA";
 import styled from "styled-components";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import POKENMON_COLOR from "../data/POKEMON_COLOR";
-import { PokemonContext } from "../contexts/PokemonContext";
+import { useDispatch, useSelector } from "react-redux";
+import { addPokemon, removePokemon } from "../redux/pokemonSlice";
 
 const StContainer = styled.div`
   width: 500px;
@@ -78,8 +78,9 @@ const StAddRemoveButton = styled.button`
 `;
 
 const PokemonDetail = () => {
-  // [*] 추가/삭제 버튼 추가
-  const { myPokemon, addPokemon, removePokemon } = useContext(PokemonContext);
+  // [*] dispatch, useSelector 사용
+  const myPokemon = useSelector((state) => state.pokemonData);
+  const dispatch = useDispatch();
 
   const [params] = useSearchParams();
   const pokemonId = params.get("id");
@@ -112,6 +113,14 @@ const PokemonDetail = () => {
     navigate(`/dex/detail?id=${id - 1}`);
   };
 
+  const addPokemonBtn = (card) => {
+    return dispatch(addPokemon(card));
+  };
+
+  const removePokemonBtn = (card) => {
+    return dispatch(removePokemon(card));
+  };
+
   return (
     <StBox $types={seletedPokemonInfo.types}>
       <StContainer>
@@ -128,7 +137,7 @@ const PokemonDetail = () => {
               <StAddRemoveButton
                 $btnColor="red"
                 $hoverColor="darkred"
-                onClick={() => removePokemon(seletedPokemonInfo.id)}
+                onClick={() => removePokemonBtn(seletedPokemonInfo)}
               >
                 포켓몬 도감에서 삭제하기
               </StAddRemoveButton>
@@ -136,7 +145,7 @@ const PokemonDetail = () => {
               <StAddRemoveButton
                 $btnColor="#6d996f"
                 $hoverColor="darkgreen"
-                onClick={() => addPokemon(seletedPokemonInfo.id)}
+                onClick={() => addPokemonBtn(seletedPokemonInfo)}
               >
                 포켓몬 도감에 추가하기
               </StAddRemoveButton>
